@@ -1,0 +1,78 @@
+<!-- ════════════════════════════════════════════════════════════
+     THE ARCHITECT · SPA 视图片段（由 router.js 注入）
+     ════════════════════════════════════════════════════════════ -->
+
+<!-- ─── Top navigation ──────────────────────────────────── -->
+<nav class="page-nav" aria-label="Page navigation">
+  <a class="page-nav__brand" href="#/">MARS CONCERT 2.0</a>
+  <div class="page-nav__links">
+    <a class="page-nav__link" href="#/mission">Mission Control</a>
+    <a class="page-nav__link" href="#/setlist">Twin Setlist</a>
+    <a class="page-nav__link is-current" href="#/artist">The Architect</a>
+  </div>
+  <a class="page-nav__back" href="#/">
+    <svg viewBox="0 0 24 24" width="14" height="14"><path d="M19 12H5 M11 6l-6 6 6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    火星入口 Mars Entry
+  </a>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════
+     THE ARCHITECT · Artist Bio + FAQ
+     ════════════════════════════════════════════════════════════ -->
+<section class="act act--info page-act">
+  <div class="act__bg" style="background-image:url('assets/image/stills/05v2_water_curtain_min.webp')"></div>
+  <div class="info-wrap">
+    <div class="info-head">
+      <p class="info-head__eyebrow">Encore · Chapter Ⅹ</p>
+      <h2 class="info-head__title">The <em>Architect</em></h2>
+      <p class="info-head__desc">在废弃采石场建造火星乌托邦的人——以及每个火星人都会问的问题。</p>
+    </div>
+
+    <div class="artist-layout">
+      <!-- Artist Bio -->
+      <div class="artist-card">
+        <div class="artist-card__head">
+          <h3 class="artist-card__name">Hua Chenyu</h3>
+          <span class="artist-card__name-zh">华晨宇</span>
+        </div>
+        <p class="artist-card__bio">
+          <strong>1990年2月7日</strong>生于湖北十堰，毕业于<strong>武汉音乐学院</strong>。以<strong>2013年 Super Boy 冠军</strong>身份出道，开启了一段重新定义中国 Live Music 体验的旅程。
+        </p>
+        <p class="artist-card__bio">
+          他的歌迷——<strong>火星人 (Martians)</strong>——曾许诺"总有一天一起回火星"。他兑现了这个承诺：<strong>Mars Concert</strong> IP 自2014年起，11年间跨越20省24城，累计87场演出。
+        </p>
+        <p class="artist-card__bio">
+          他是登上<strong>国家体育场（鸟巢 Bird's Nest）</strong>巡演的最年轻歌手，创国内单场演唱会最高人数纪录，并首创户外公园演唱会模式（2021）和全球首个日出海滩演唱会（2024）。其舞台设计荣获<strong>四项 MUSE Design Awards</strong>，含三项 Platinum 奖。
+        </p>
+        <div class="artist-stats">
+          <div class="artist-stat">
+            <span class="artist-stat__value">87</span>
+            <span class="artist-stat__label">场次</span>
+          </div>
+          <div class="artist-stat">
+            <span class="artist-stat__value">20</span>
+            <span class="artist-stat__label">省份</span>
+          </div>
+          <div class="artist-stat">
+            <span class="artist-stat__value">11</span>
+            <span class="artist-stat__label">年份</span>
+          </div>
+        </div>
+      </div>
+
+        <!-- FAQ：改为后端动态渲染 -->
+        <div class="faq-list" id="faqList">
+          <div class="faq-loading">Loading questions…</div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ──────────────────────────────────────────── -->
+<footer class="page-footer">
+  <a class="page-footer__return" href="#/">
+    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 19V5 M6 11l6-6 6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    返回火星 Return to Mars
+  </a>
+  <p class="page-footer__credit">Designed by Demogorgan · Mars Concert 2.0</p>
+</footer>

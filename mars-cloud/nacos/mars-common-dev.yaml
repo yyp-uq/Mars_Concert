@@ -1,0 +1,57 @@
+# ============================================================
+# Nacos 共享配置：data-id=mars-common-dev.yaml, group=MARS_GROUP
+# 三个业务服务（auth/show/order）通过 bootstrap.yml 的 shared-configs 引用本文件。
+# 把「所有服务都一样」的配置收敛到这里，服务自身配置只留差异化项。
+# ============================================================
+
+spring:
+  # ---------- MySQL 数据源 ----------
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mars_concert?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: "1234"
+
+  # ---------- JSON 序列化（统一 Jackson，严禁 fastjson） ----------
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+  # ---------- Redis ----------
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 20
+          max-idle: 10
+          min-idle: 2
+          max-wait: 3000ms
+
+# ---------- JWT（网关与 auth-service 同一密钥） ----------
+mars:
+  jwt:
+    secret: mars-concert-super-secret-key-please-change-in-prod-0123456789
+    access-ttl-seconds: 7200
+    refresh-ttl-seconds: 604800
+
+# ---------- MyBatis-Plus ----------
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+logging:
+  level:
+    com.mars: debug

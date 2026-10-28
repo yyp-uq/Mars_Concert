@@ -1,0 +1,100 @@
+# ============================================================
+# 第8卷：微服务基础设施一键编排（手册 §14）
+# 启动：docker compose -f docker/cloud/docker-compose.yml up -d
+# 包含：MySQL / Redis / RabbitMQ / Nacos / Seata / Sentinel / Zipkin
+# 说明：本机开发已装有 MySQL/Redis/RabbitMQ 时，可只启动 nacos/seata/sentinel/zipkin。
+# ============================================================
+name: mars-cloud-infra
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mars-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"
+      MYSQL_DATABASE: mars_concert
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-p1234" ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7
+    container_name: mars-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: mars-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: mars
+      RABBITMQ_DEFAULT_PASS: mars123
+    ports:
+      - "5672:5672"     # AMQP
+      - "15672:15672"   # 管理控制台
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+  nacos:
+    image: nacos/nacos-server:v2.4.3
+    container_name: mars-nacos
+    environment:
+      MODE: standalone                 # 单机模式（学习期不搭集群）
+      NACOS_AUTH_ENABLE: "false"
+      JVM_XMS: 512m
+      JVM_XMX: 512m
+    ports:
+      - "8848:8848"     # 控制台/注册中心
+      - "9848:9848"     # gRPC（Nacos 2.x 客户端必需）
+    volumes:
+      - nacos-data:/home/nacos/data
+
+  seata:
+    image: seataio/seata-server:2.2.0
+    container_name: mars-seata
+    environment:
+      SEATA_PORT: "8091"
+      # 注册到 Nacos：客户端 seata.registry.nacos.group=SEATA_GROUP 与之对应
+      seata.registry.type: nacos
+      seata.registry.nacos.application: seata-server
+      seata.registry.nacos.server-addr: nacos:8848
+      seata.registry.nacos.group: SEATA_GROUP
+      seata.registry.nacos.cluster: default
+      seata.config.type: file
+    ports:
+      - "8091:8091"
+    depends_on:
+      - nacos
+
+  sentinel:
+    image: bladex/sentinel-dashboard:1.8.8
+    container_name: mars-sentinel
+    ports:
+      - "8858:8858"     # 控制台（客户端 spring.cloud.sentinel.transport.dashboard 指向它）
+
+  zipkin:
+    image: openzipkin/zipkin:2
+    container_name: mars-zipkin
+    ports:
+      - "9411:9411"     # 全链路追踪 UI
+
+volumes:
+  mysql-data:
+  redis-data:
+  rabbitmq-data:
+  nacos-data:

@@ -1,0 +1,154 @@
+/* ════════════════════════════════════════════════════════════
+   MARS CONCERT 2.0 · hero.css
+   HERO 首屏专属样式
+   ════════════════════════════════════════════════════════════ */
+
+/* ─── HERO Overlay ──────────────────────────────────────────── */
+.act--hero .act__overlay--hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--sp-sm);
+}
+
+/* ─── HERO Content ──────────────────────────────────────────── */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+
+.hero-content__location {
+  font-family: var(--font-serif-zh);
+  font-size: var(--fs-small);
+  font-weight: 400;
+  color: var(--color-text-muted);
+  letter-spacing: 0.15em;
+  margin-bottom: var(--sp-xs);
+}
+
+/* HERO Title: MARS CONCERT 2.0 */
+.hero-content__title {
+  font-family: var(--font-serif-en);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.9;
+  letter-spacing: 0.05em;
+}
+
+.hero-content__title-line {
+  font-size: clamp(44px, 7.2vw, 112px);
+  font-weight: 700;
+  color: var(--color-text);
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  white-space: nowrap; /* MARS CONCERT 必须在一行 */
+}
+
+.hero-content__title-version {
+  font-size: clamp(20px, 3vw, 36px);
+  font-weight: 400;
+  color: var(--color-accent);
+  letter-spacing: 0.3em;
+  margin-top: 0.1em;
+}
+
+/* HERO Subtitle: MARS UTOPIA */
+.hero-content__subtitle {
+  font-family: var(--font-serif-en);
+  font-size: clamp(20px, 3.5vw, 40px);
+  font-weight: 600;
+  color: var(--color-gold);
+  letter-spacing: 0.5em;
+  margin-top: var(--sp-xs);
+  text-indent: 0.5em; /* compensate letter-spacing on last char */
+}
+
+/* HERO Description */
+.hero-content__desc {
+  font-family: var(--font-serif-zh);
+  font-size: var(--fs-narrative);
+  font-weight: 400;
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
+  line-height: 1.8;
+  margin-top: var(--sp-xs);
+  max-width: 500px;
+}
+
+/* ─── Scroll Hint ───────────────────────────────────────────── */
+.hero-scroll-hint {
+  position: absolute;
+  bottom: var(--sp-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-xs);
+}
+
+.hero-scroll-hint__text {
+  font-family: var(--font-serif-en);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  letter-spacing: 0.3em;
+}
+
+.hero-scroll-hint__line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--color-text-muted), transparent);
+  animation: scrollLine 2s var(--ease-in-out) infinite;
+}
+
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ─── HERO Entrance Animation (GSAP-driven, fallback via CSS) ── */
+.hero-content__title-line,
+.hero-content__title-version,
+.hero-content__subtitle,
+.hero-content__desc,
+.hero-content__location {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-content.is-visible .hero-content__location {
+  animation: heroFadeIn 0.8s var(--ease-out) 0.2s forwards;
+}
+.hero-content.is-visible .hero-content__title-line {
+  animation: heroFadeIn 1s var(--ease-out) 0.5s forwards;
+}
+.hero-content.is-visible .hero-content__title-version {
+  animation: heroFadeIn 0.8s var(--ease-out) 1s forwards;
+}
+.hero-content.is-visible .hero-content__subtitle {
+  animation: heroFadeIn 0.8s var(--ease-out) 1.3s forwards;
+}
+.hero-content.is-visible .hero-content__desc {
+  animation: heroFadeIn 0.6s var(--ease-out) 1.6s forwards;
+}
+
+@keyframes heroFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── HERO Vignette ─────────────────────────────────────────── */
+.act--hero .act__media::after {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(10, 10, 15, 0.15) 0%,
+    rgba(10, 10, 15, 0.5) 50%,
+    rgba(10, 10, 15, 0.95) 100%
+  );
+}

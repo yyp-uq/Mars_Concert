@@ -1,0 +1,119 @@
+<!-- ════════════════════════════════════════════════════════════
+     MISSION CONTROL · SPA 视图片段（由 router.js 注入）
+     ════════════════════════════════════════════════════════════ -->
+
+<!-- ─── Top navigation ──────────────────────────────────── -->
+<nav class="page-nav" aria-label="Page navigation">
+  <a class="page-nav__brand" href="#/">MARS CONCERT 2.0</a>
+  <div class="page-nav__links">
+    <a class="page-nav__link is-current" href="#/mission">Mission Control</a>
+    <a class="page-nav__link" href="#/setlist">Twin Setlist</a>
+    <a class="page-nav__link" href="#/artist">The Architect</a>
+  </div>
+  <a class="page-nav__back" href="#/">
+    <svg viewBox="0 0 24 24" width="14" height="14"><path d="M19 12H5 M11 6l-6 6 6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    火星入口 Mars Entry
+  </a>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════
+     MISSION CONTROL · Countdown + Event Info + Tickets
+     ════════════════════════════════════════════════════════════ -->
+<section class="act act--info page-act">
+  <div class="act__bg" style="background-image:url('assets/image/stills/06v3_fireworks_stage_min.webp')"></div>
+  <div class="info-wrap">
+    <div class="info-head">
+      <p class="info-head__eyebrow">Encore · Chapter Ⅷ</p>
+      <h2 class="info-head__title">Mission <em>Control</em></h2>
+      <p class="info-head__desc">实时 Mars 时间、演出 Schedule、购票入口与分享——火星人所需的一切。</p>
+    </div>
+
+    <!-- Mars Time live counter -->
+    <div class="mars-time">
+      <span class="mars-time__status" id="marsStatus">2026 演出季已落幕</span>
+      <div class="mars-time__digits">
+        <div class="mars-time__unit">
+          <span class="mars-time__num" id="mtDays">00</span>
+          <span class="mars-time__label">天</span>
+        </div>
+        <span class="mars-time__sep">:</span>
+        <div class="mars-time__unit">
+          <span class="mars-time__num" id="mtHours">00</span>
+          <span class="mars-time__label">时</span>
+        </div>
+        <span class="mars-time__sep">:</span>
+        <div class="mars-time__unit">
+          <span class="mars-time__num" id="mtMin">00</span>
+          <span class="mars-time__label">分</span>
+        </div>
+        <span class="mars-time__sep">:</span>
+        <div class="mars-time__unit">
+          <span class="mars-time__num" id="mtSec">00</span>
+          <span class="mars-time__label">秒</span>
+        </div>
+      </div>
+      <p class="mars-time__caption" id="marsCaption">火星回家之旅始于 2026年9月25日</p>
+    </div>
+
+    <!-- Event info grid (动态：由 mission-loader.js 填充 #eventRows + #priceRange) -->
+    <div class="event-grid" id="eventRows">
+      <div class="event-cell">
+        <span class="event-cell__label">演出日期 Show Dates</span>
+        <span class="event-cell__value">Sep 25–27 · Oct 2, 3, 5, 6</span>
+        <span class="event-cell__sub">加载中…</span>
+      </div>
+    </div>
+
+    <!-- Ticket portals + share -->
+    <div class="action-row">
+      <div class="ticket-portals">
+        <span class="ticket-portals__label">购票通道 Ticket Portals · <span id="priceRange">¥380 - ¥1280</span></span>
+        <div class="ticket-btns">
+          <a class="ticket-btn" href="#/tickets" style="background:linear-gradient(135deg,#E63946,#F4A261);color:#fff;border-color:#E63946;">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M3 7l9-4 9 4-9 4-9-4z M5 11l7 3 7-3 M5 15l7 3 7-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            MARS 官方购票
+          </a>
+          <a class="ticket-btn" href="https://www.damai.cn/" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M3 7l9-4 9 4-9 4-9-4z M5 11l7 3 7-3 M5 15l7 3 7-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Damai
+          </a>
+          <a class="ticket-btn" href="https://www.maoyan.com/" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="9" cy="10" r="1.5" fill="currentColor"/><circle cx="15" cy="10" r="1.5" fill="currentColor"/></svg>
+            Maoyan
+          </a>
+          <a class="ticket-btn" href="https://www.ctrip.com/" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M3 12h18 M12 3v18" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+            Ctrip
+          </a>
+          <a class="ticket-btn" href="https://www.douyin.com/" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M9 4v12a3 3 0 11-3-3 M15 4c1 2 3 3 5 3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Douyin
+          </a>
+        </div>
+      </div>
+      <div class="share-group">
+        <span class="share-group__label">分享火星 Share Mars</span>
+        <div class="share-btns">
+          <a class="share-btn" data-share="weibo" aria-label="Share on Weibo" title="Share on Weibo">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M10 14c-3 0-5 1-5 3s2 3 5 3 5-1 5-3-2-3-5-3z M8 18a1 1 0 110-2 1 1 0 010 2z M14 9c4 0 6 2 6 5 M14 6c6 0 9 3 9 8" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          </a>
+          <a class="share-btn" data-share="twitter" aria-label="Share on X" title="Share on X">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 4l16 16 M20 4L4 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </a>
+          <button class="share-btn share-btn--copy" aria-label="Copy link" title="Copy link">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M10 14a4 4 0 004-4V6a4 4 0 00-8 0v4 M6 14a4 4 0 004 4h4a4 4 0 004-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ──────────────────────────────────────────── -->
+<footer class="page-footer">
+  <a class="page-footer__return" href="#/">
+    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 19V5 M6 11l6-6 6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    返回火星 Return to Mars
+  </a>
+  <p class="page-footer__credit">Designed by Demogorgan · Mars Concert 2.0</p>
+</footer>

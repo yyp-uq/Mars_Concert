@@ -1,0 +1,255 @@
+/* ════════════════════════════════════════════════════════════
+   MARS CONCERT 2.0 · pages.css
+   独立功能页外壳：Mission Control / Twin Setlist / The Architect
+   ════════════════════════════════════════════════════════════ */
+
+/* ─── Page background ambience ──────────────────────────────── */
+.page-body {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(230,57,70,0.08), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(244,162,97,0.05), transparent 60%),
+    var(--color-bg);
+  min-height: 100vh;
+}
+
+/* ─── Fixed top navigation ──────────────────────────────────── */
+.page-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem clamp(1rem, 4vw, 3rem);
+  background: rgba(10,10,15,0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.page-nav__brand {
+  font-family: var(--font-serif-en);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--color-text);
+  white-space: nowrap;
+  transition: color 0.25s var(--ease-out);
+}
+
+.page-nav__brand:hover { color: var(--color-gold); }
+
+.page-nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 2vw, 1.75rem);
+}
+
+.page-nav__link {
+  position: relative;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 0.4rem 0.2rem;
+  white-space: nowrap;
+  transition: color 0.25s var(--ease-out);
+}
+
+.page-nav__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.page-nav__link:hover { color: var(--color-text); }
+.page-nav__link:hover::after { transform: scaleX(1); }
+
+.page-nav__link.is-current {
+  color: var(--color-gold);
+}
+
+.page-nav__link.is-current::after {
+  transform: scaleX(1);
+  background: var(--color-gold);
+}
+
+.page-nav__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Orbitron', var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  border: 1px solid var(--color-gold);
+  border-radius: 2px;
+  padding: 0.55rem 1rem;
+  white-space: nowrap;
+  transition: all 0.25s var(--ease-out);
+  background: rgba(244,162,97,0.08);
+}
+
+.page-nav__back:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent-soft);
+  background: rgba(230,57,70,0.06);
+}
+
+.page-nav__back svg { transition: transform 0.25s var(--ease-out); }
+.page-nav__back:hover svg { transform: translateX(-3px); }
+
+/* ─── Page main section (override .act--info centering) ─────── */
+.page-act {
+  min-height: auto;
+  display: block;
+  align-items: initial;
+  justify-content: initial;
+  padding: clamp(6.5rem, 12vh, 9rem) var(--sp-lg) 4rem;
+}
+
+.page-act .info-wrap {
+  animation: none;
+}
+
+/* ─── Page footer ───────────────────────────────────────────── */
+.page-footer {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 3rem var(--sp-lg) 4rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.page-footer__return {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-serif-zh);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--color-gold);
+  border: 1px solid var(--color-gold-soft);
+  border-radius: 2px;
+  padding: 0.9rem 2.2rem;
+  transition: all 0.3s var(--ease-out);
+}
+
+.page-footer__return:hover {
+  background: rgba(244,162,97,0.08);
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+}
+
+.page-footer__credit {
+  margin-top: 2rem;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+/* ════════════════════════════════════════════════════════════
+   HOMEPAGE FINALE — Explore portals to standalone pages
+   ════════════════════════════════════════════════════════════ */
+.finale-explore {
+  margin-top: 2.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.9rem;
+}
+
+.finale-explore__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-serif-zh);
+  letter-spacing: 0.04em;
+  padding: 0.8rem 1.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  background: rgba(255,255,255,0.03);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  transition: all 0.3s var(--ease-out);
+}
+
+.finale-explore__link svg {
+  flex-shrink: 0;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.finale-explore__link:hover {
+  color: var(--color-gold);
+  border-color: var(--color-gold-soft);
+  background: rgba(244,162,97,0.07);
+  transform: translateY(-2px);
+}
+
+.finale-explore__link:hover svg { transform: translateX(3px); }
+
+.finale-explore__divider {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0.4rem;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.finale-card.is-active .finale-explore { animation-delay: 1.25s; }
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .page-nav {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 0.7rem 1rem;
+  }
+
+  .page-nav__brand {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+  }
+
+  .page-nav__links {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .page-nav__link {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+
+  .page-nav__back {
+    padding: 0.4rem 0.7rem;
+    font-size: 9px;
+  }
+
+  .page-act {
+    padding: 9rem 1.25rem 3rem;
+  }
+
+  .finale-explore__link {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,57 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false       # 只用显式路由，/internal/** 不配置即不对外暴露
+      routes:
+        - id: auth-service
+          uri: lb://mars-auth-service
+          predicates:
+            - Path=/api/v1/auth/**,/api/v1/member/**
+        - id: show-service
+          uri: lb://mars-show-service
+          predicates:
+            - Path=/api/v1/events/**,/api/v1/show/**,/api/v1/seats/**,/api/admin/inventory/**
+        - id: order-service
+          uri: lb://mars-order-service
+          predicates:
+            - Path=/api/v1/orders/**,/api/v1/cart/**,/api/admin/orders/**
+          filters:
+            # Redis 令牌桶限流：每秒补20，桶容量40，按客户端IP（§8.2）
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 40
+                key-resolver: "#{@ipKeyResolver}"
+        # 第9卷：AI 客服（独立工程，nacos-client 手工注册）；静态聊天页同源托管
+        - id: ai-service
+          uri: lb://mars-ai-service
+          predicates:
+            - Path=/api/v1/ai/**,/ai-chat.html
+          filters:
+            # AI 调用按 IP 限流，防止刷 token 烧钱：每秒补5，桶容量10
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 10
+                key-resolver: "#{@ipKeyResolver}"
+
+# 本地兜底：Nacos 共享配置不可用时也能启动（内容应与 mars-common-dev.yaml 保持一致）
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      timeout: 3000ms
+
+mars:
+  jwt:
+    secret: mars-concert-super-secret-key-please-change-in-prod-0123456789
+
+logging:
+  level:
+    com.mars.gateway: debug

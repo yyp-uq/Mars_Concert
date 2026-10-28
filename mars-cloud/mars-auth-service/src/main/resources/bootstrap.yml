@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: mars-auth-service
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        namespace: public
+        group: MARS_GROUP
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        group: MARS_GROUP
+        # 共享配置：数据库/redis/jwt 等所有服务通用
+        shared-configs:
+          - data-id: mars-common-dev.yaml
+            group: MARS_GROUP
+            refresh: true

@@ -1,0 +1,12 @@
+{
+  "name": "mars-netease-proxy",
+  "version": "1.0.0",
+  "description": "Mars Concert NetEase Music API proxy (weapi/eapi encrypted)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "NeteaseCloudMusicApi": "^4.2.5"
+  }
+}

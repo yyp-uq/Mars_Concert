@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="MARS CONCERT 2.0 · MARS UTOPIA — an immersive concept site for the Mars Concert">
+  <meta name="theme-color" content="#0A0A0F">
+  <meta property="og:title" content="MARS CONCERT 2.0 · MARS UTOPIA">
+  <meta property="og:description" content="From abandoned quarry to the Red Planet — an immersive visual journey">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/image/stills/01_quarry_mars_transition.png">
+  <title>MARS CONCERT 2.0 · MARS UTOPIA</title>
+
+  <!-- Fonts: Cinzel (local) + Inter (Google) -->
+  <link rel="preload" href="fonts/cinzel.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preconnect" href="https://fonts.loli.net">
+  <link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet">
+  <link href="https://fonts.loli.net/css2?family=Inter:wght@300;400;500;600&family=ZCOOL+XiaoWei&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- GSAP + ScrollTrigger + ScrollToPlugin -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js" defer></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css?v=13">
+  <link rel="stylesheet" href="css/hero.css?v=6">
+  <link rel="stylesheet" href="css/responsive.css?v=6">
+  <link rel="stylesheet" href="css/polish.css?v=13">
+  <link rel="stylesheet" href="css/pages.css?v=5">
+  <link rel="stylesheet" href="css/functional.css?v=11">
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- 播放器提速：预热代理与 CDN 连接，预取 SPA 视图片段 -->
+  <link rel="preconnect" href="http://localhost:3000">
+  <link rel="preconnect" href="https://music.163.com">
+  <link rel="preconnect" href="https://music.126.net" crossorigin>
+  <link rel="prefetch" href="views/setlist.html">
+  <link rel="prefetch" href="views/mission.html">
+  <link rel="prefetch" href="views/artist.html">
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════════
+       FIXED UI LAYER
+       ════════════════════════════════════════════════════════════ -->
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Right-side chapter dot navigation -->
+  <nav class="nav-dots" id="navDots" aria-label="Chapter navigation">
+    <button class="nav-dot active" data-target="act-0" aria-label="Act I · Quarry Mars">
+      <span class="nav-dot__label">Ⅰ</span>
+    </button>
+    <button class="nav-dot" data-target="act-1" aria-label="Act II · Mars Utopia">
+      <span class="nav-dot__label">Ⅱ</span>
+    </button>
+    <button class="nav-dot" data-target="act-2" aria-label="Act III · Steel Colossus">
+      <span class="nav-dot__label">Ⅲ</span>
+    </button>
+    <button class="nav-dot" data-target="act-3" aria-label="Act IV · Steel Letters">
+      <span class="nav-dot__label">Ⅳ</span>
+    </button>
+    <button class="nav-dot" data-target="act-4" aria-label="Act V · Water Ring">
+      <span class="nav-dot__label">Ⅴ</span>
+    </button>
+    <button class="nav-dot" data-target="act-5" aria-label="Act VI · Blue Water Curtain">
+      <span class="nav-dot__label">Ⅵ</span>
+    </button>
+    <button class="nav-dot" data-target="act-6" aria-label="Act VII · Fireworks Finale">
+      <span class="nav-dot__label">Ⅶ</span>
+    </button>
+  </nav>
+
+  <!-- Music toggle (top-right) -->
+  <button class="music-toggle" id="musicToggle" aria-label="Toggle background music">
+    <svg class="music-toggle__icon music-toggle__icon--on" viewBox="0 0 24 24" width="20" height="20">
+      <path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+      <circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+    </svg>
+    <svg class="music-toggle__icon music-toggle__icon--off" viewBox="0 0 24 24" width="20" height="20" style="display:none">
+      <path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+      <circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+      <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <!-- Circular reveal overlay (for theme switch / return to top) -->
+  <div class="reveal-overlay" id="revealOverlay"></div>
+
+  <!-- Particle canvas (global, behind content) -->
+  <canvas class="particle-canvas" id="particleCanvas" aria-hidden="true"></canvas>
+
+  <!-- Cinematic overlays: vignette + film grain -->
+  <div class="vignette-overlay" aria-hidden="true"></div>
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SPA VIEW CONTAINER
+       ════════════════════════════════════════════════════════════ -->
+  <main id="appView">
+  <div class="view" id="view-home">
+
+  <!-- ════════════════════════════════════════════════════════════
+       ACT 0 — HERO · QUARRY MARS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="act act--hero" id="act-0" data-act="0">
+    <div class="act__media">
+      <video class="act__video" preload="none" playsinline muted
+             poster="assets/image/stills/01_quarry_min.webp"
+             data-poster-full="assets/image/stills/01_quarry_mars_transition.png">
+        <source data-src="assets/video/v01_quarry.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="act__overlay act__overlay--hero">
+      <div class="hero-content">
+        <p class="hero-content__location">南京汤山 Music Valley · 废弃采石场重生</p>
+        <h1 class="hero-content__title">
+          <span class="hero-content__title-line">MARS CONCERT</span>
+          <span class="hero-content__title-version">2.0</span>
+        </h1>
+        <p class="hero-content__subtitle">MARS UTOPIA</p>
+        <p class="hero-content__desc">从废弃采石场到红色星球 · 一场 Immersive Visual Journey</p>
+      </div>
+      <div class="hero-scroll-hint">
+        <span class="hero-scroll-hint__text">SCROLL</span>
+        <span class="hero-scroll-hint__line"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       ACT I — MARS UTOPIA
+       ════════════════════════════════════════════════════════════ -->
+  <section class="act" id="act-1" data-act="1">
+    <div class="act__media">
+      <video class="act__video" preload="none" playsinline muted
+             poster="assets/image/stills/01_quarry_min.webp"
+             data-poster-full="assets/image/stills/01_quarry_mars_transition.png">
+        <source data-src="assets/video/v01_quarry.mp4" type="video/mp4">
+      </video>
+    </div>
+    <span class="act__ghost-numeral" aria-hidden="true">II</span>
+    <div class="act__overlay">
+      <div class="act__chapter">
+        <span class="act__numeral">Ⅱ</span>
+        <div class="act__titles">
+          <h2 class="act__title-zh">MARS UTOPIA</h2>
+          <p class="act__title-en">THE RED PLANET</p>
+        </div>
+      </div>
+      <p class="act__narrative">40万㎡废弃采石场，重生为红色星球</p>
+      <div class="act__data-card">
+        <div class="data-card__item">
+          <span class="data-card__value">400K</span>
+          <span class="data-card__unit">㎡</span>
+          <span class="data-card__label">采石场总面积</span>
+        </div>
+        <div class="data-card__item">
+          <span class="data-card__value">150</span>
+          <span class="data-card__unit">m</span>
+          <span class="data-card__label">悬崖高度</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       ACT II — STEEL COLOSSUS · MAIN STAGE
+       ════════════════════════════════════════════════════════════ -->
+  <section class="act" id="act-2" data-act="2">
+    <div class="act__media">
+      <video class="act__video" preload="none" playsinline muted
+             poster="assets/image/stills/02v4_stage_min.webp"
+             data-poster-full="assets/image/stills/02v4_stage.png">
+        <source data-src="assets/video/v02_stage.mp4" type="video/mp4">
+      </video>
+    </div>
+    <span class="act__ghost-numeral" aria-hidden="true">III</span>
+    <div class="act__overlay">
+      <div class="act__chapter">
+        <span class="act__numeral">Ⅲ</span>
+        <div class="act__titles">
+          <h2 class="act__title-zh">STEEL COLOSSUS</h2>
+          <p class="act__title-en">THE MAIN STAGE</p>
+        </div>
+      </div>
+      <p class="act__narrative">2,000吨钢材，铸就万人共鸣的 Main Stage</p>
+      <div class="act__data-card">
+        <div class="data-card__item">
+          <span class="data-card__value">2,000</span>
+          <span class="data-card__unit">tons</span>
+          <span class="data-card__label">舞台用钢量</span>
+        </div>
+        <div class="data-card__item">
+          <span class="data-card__value">9,000</span>
+          <span class="data-card__unit">㎡</span>
+          <span class="data-card__label">LED 屏幕面积</span>
+        </div>
+        <div class="data-card__item">
+          <span class="data-card__value">130</span>
+          <span class="data-card__unit">m</span>
+          <span class="data-card__label">结构跨度</span>
+        </div>
+        <div class="data-card__item">
+          <span class="data-card__value">30</span>
+          <span class="data-card__unit">m</span>
+          <span class="data-card__label">最高结构</span>
+        </div>
+        <div class="data-card__item">
+          <span class="data-card__value">8+1</span>
+          <span class="data-card__label">三棱柱机械柱</span>
+        </div>
+        <div class="data-card__item">
+          <span class="data-card__value">6</span>
+          <span class="data-card__unit">× 18 m</span>
+          <span class="data-card__label">纤光塔</span>
+        </div>
+      </div>
+      <button class="ref-drawer-btn" data-drawer="drawer-2">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 4h16v16H4z M4 12h16 M12 4v16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        LIVE PHOTOS
+      </button>
+    </div>
+  </section>
+
+  <!-- Reference drawer for Act II -->
+  <aside class="ref-drawer" id="drawer-2">
+    <div class="ref-drawer__header">
+      <h3 class="ref-drawer__title">LIVE PHOTOS · STEEL COLOSSUS</h3>
+      <button class="ref-drawer__close" data-drawer="drawer-2" aria-label="Close">✕</button>
+    </div>
+    <div class="ref-drawer__grid">
+      <img class="ref-drawer__img" src="assets/image/references/real_5QwfAbKCjh.jpg" alt="Main stage frontal view" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_8SOeThdfYe.jpg" alt="Main stage close-up" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_3s7gnxAUU0.jpg" alt="Main stage at night" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_WyxFnsZWeC.jpg" alt="Steel structure detail" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_kjSXYULPHu.jpg" alt="Stage scaffolding" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_VUNFFmp8KO.jpg" alt="Colossus wide shot" loading="lazy">
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════════════════════════════════════
+       ACT III — STEEL LETTERS · CLIFF WATERFALL
+       ════════════════════════════════════════════════════════════ -->
+  <section class="act" id="act-3" data-act="3">
+    <div class="act__media">
+      <video class="act__video" preload="none" playsinline muted
+             poster="assets/image/stills/03v2_mars_sign_min.webp"
+             data-poster-full="assets/image/stills/03v2_mars_sign.png">
+        <source data-src="assets/video/v03_sign.mp4" type="video/mp4">
+      </video>
+    </div>
+    <span class="act__ghost-numeral" aria-hidden="true">IV</span>
+    <div class="act__overlay">
+      <div class="act__chapter">
+        <span class="act__numeral">Ⅳ</span>
+        <div class="act__titles">
+          <h2 class="act__title-zh">STEEL LETTERS</h2>
+          <p class="act__title-en">CARVED IN CLIFF</p>
+        </div>
+      </div>
+      <p class="act__narrative">白色镂空钢字——MARS CONCERT 镌刻于崖壁</p>
+      <div class="act__data-card">
+        <div class="data-card__item">
+          <span class="data-card__value">150</span>
+          <span class="data-card__unit">m</span>
+          <span class="data-card__label">悬崖瀑布落差</span>
+        </div>
+        <div class="data-card__item">
+          <span class="data-card__value">UFO</span>
+          <span class="data-card__label">火星餐厅 Mars Canteen</span>
+        </div>
+      </div>
+      <button class="ref-drawer-btn" data-drawer="drawer-3">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 4h16v16H4z M4 12h16 M12 4v16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        LIVE PHOTOS
+      </button>
+    </div>
+  </section>
+
+  <aside class="ref-drawer" id="drawer-3">
+    <div class="ref-drawer__header">
+      <h3 class="ref-drawer__title">LIVE PHOTOS · STEEL LETTERS</h3>
+      <button class="ref-drawer__close" data-drawer="drawer-3" aria-label="Close">✕</button>
+    </div>
+    <div class="ref-drawer__grid">
+      <img class="ref-drawer__img" src="assets/image/references/real_6WqWnpSwMj.jpg" alt="Steel letters panorama" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_4dRKaVSsIt.jpg" alt="Cliff waterfall" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_aJp32VisYo.jpg" alt="Mars canteen" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_Tor2BUrI9g.jpg" alt="Giant sign close-up" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_yrFj7uVdbU.jpg" alt="Waterfall from cliff" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_PS4OAeqoAZ.jpg" alt="Quarry letters view" loading="lazy">
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════════════════════════════════════
+       INTERLUDE — MARQUEE BAND
+       ════════════════════════════════════════════════════════════ -->
+  <div class="marquee-band" aria-hidden="true">
+    <div class="marquee-band__track">
+      <span>MARS CONCERT 2.0<em>✦</em>MARS UTOPIA<em>✦</em>NANJING TANGSHAN<em>✦</em>&nbsp;</span>
+      <span>MARS CONCERT 2.0<em>✦</em>MARS UTOPIA<em>✦</em>NANJING TANGSHAN<em>✦</em>&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       ACT IV — FOR FOREVER · WATER RING
+       ════════════════════════════════════════════════════════════ -->
+  <section class="act" id="act-4" data-act="4">
+    <div class="act__media">
+      <video class="act__video" preload="none" playsinline muted
+             poster="assets/image/stills/04v2_water_ring_min.webp"
+             data-poster-full="assets/image/stills/04v2_water_ring.png">
+        <source data-src="assets/video/v04_water_ring.mp4" type="video/mp4">
+      </video>
+    </div>
+    <span class="act__ghost-numeral" aria-hidden="true">V</span>
+    <div class="act__overlay">
+      <div class="act__chapter">
+        <span class="act__numeral">Ⅴ</span>
+        <div class="act__titles">
+          <h2 class="act__title-zh">WATER RING</h2>
+          <p class="act__title-en">FOR FOREVER</p>
+        </div>
+      </div>
+      <p class="act__narrative">悬浮之环，水与光交织出永恒</p>
+      <button class="ref-drawer-btn" data-drawer="drawer-4">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 4h16v16H4z M4 12h16 M12 4v16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        LIVE PHOTOS
+      </button>
+    </div>
+  </section>
+
+  <aside class="ref-drawer" id="drawer-4">
+    <div class="ref-drawer__header">
+      <h3 class="ref-drawer__title">LIVE PHOTOS · WATER RING</h3>
+      <button class="ref-drawer__close" data-drawer="drawer-4" aria-label="Close">✕</button>
+    </div>
+    <div class="ref-drawer__grid">
+      <img class="ref-drawer__img" src="assets/image/references/real_8emrHApVSW.jpg" alt="Water ring frontal view" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_95Q5HWHCy7.jpg" alt="Water ring close-up" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_b4uUmNwzey.jpg" alt="Water ring side view" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_HTLjr2n8w5.jpg" alt="Ring water spray" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_xEVrezIVur.jpg" alt="Circular fountain" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_QgIKMWkfV4.jpg" alt="Water ring audience" loading="lazy">
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════════════════════════════════════
+       ACT V — BLUE WATER CURTAIN · CHILD SCULPTURE
+       ════════════════════════════════════════════════════════════ -->
+  <section class="act" id="act-5" data-act="5">
+    <div class="act__media">
+      <video class="act__video" preload="none" playsinline muted
+             poster="assets/image/stills/05v2_water_curtain_min.webp"
+             data-poster-full="assets/image/stills/05v2_water_curtain.png">
+        <source data-src="assets/video/v05_water.mp4" type="video/mp4">
+      </video>
+    </div>
+    <span class="act__ghost-numeral" aria-hidden="true">VI</span>
+    <div class="act__overlay">
+      <div class="act__chapter">
+        <span class="act__numeral">Ⅵ</span>
+        <div class="act__titles">
+          <h2 class="act__title-zh">BLUE WATER CURTAIN</h2>
+          <p class="act__title-en">THE CHILD SCULPTURE</p>
+        </div>
+      </div>
+      <p class="act__narrative">蓝色垂帘水幕，与巨型孩童雕塑无声对话</p>
+      <button class="ref-drawer-btn" data-drawer="drawer-5">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 4h16v16H4z M4 12h16 M12 4v16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        LIVE PHOTOS
+      </button>
+    </div>
+  </section>
+
+  <aside class="ref-drawer" id="drawer-5">
+    <div class="ref-drawer__header">
+      <h3 class="ref-drawer__title">LIVE PHOTOS · BLUE WATER CURTAIN</h3>
+      <button class="ref-drawer__close" data-drawer="drawer-5" aria-label="Close">✕</button>
+    </div>
+    <div class="ref-drawer__grid">
+      <img class="ref-drawer__img" src="assets/image/references/real_5Uj2lEIm9A.jpg" alt="Water curtain frontal view" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_6o2UbhULm9.jpg" alt="Water curtain close-up" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_B7F7UPxBwc.jpg" alt="Water curtain side view" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_UVj9xVRUKJ.jpg" alt="Blue curtain droplets" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_BtcSCdFoSr.jpg" alt="Curtain light effect" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_YBPdScF5Ei.jpg" alt="Water wall performance" loading="lazy">
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════════════════════════════════════
+       ACT VI — FIREWORKS · DRONES · FINALE
+       ════════════════════════════════════════════════════════════ -->
+  <section class="act act--finale" id="act-6" data-act="6">
+    <div class="act__media">
+      <video class="act__video" preload="none" playsinline muted
+             poster="assets/image/stills/06v3_fireworks_stage_min.webp"
+             data-poster-full="assets/image/stills/06v3_fireworks_stage.png">
+        <source data-src="assets/video/v06_fireworks.mp4" type="video/mp4">
+      </video>
+    </div>
+    <span class="act__ghost-numeral" aria-hidden="true">VII</span>
+    <div class="act__overlay">
+      <div class="act__chapter">
+        <span class="act__numeral">Ⅶ</span>
+        <div class="act__titles">
+          <h2 class="act__title-zh">FIREWORKS FINALE</h2>
+          <p class="act__title-en">THE GRAND FINALE</p>
+        </div>
+      </div>
+      <p class="act__narrative">金色箭雨穿云而上，千架 Drone 编队，万人同声</p>
+      <div class="act__data-card">
+        <div class="data-card__item">
+          <span class="data-card__value">1,000</span>
+          <span class="data-card__unit">drones</span>
+          <span class="data-card__label">无人机编队 Drone Formation</span>
+        </div>
+        <div class="data-card__item">
+          <span class="data-card__value">Golden Arrow</span>
+          <span class="data-card__label">冷烟火瀑布</span>
+        </div>
+      </div>
+      <button class="ref-drawer-btn" data-drawer="drawer-6">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 4h16v16H4z M4 12h16 M12 4v16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        LIVE PHOTOS
+      </button>
+    </div>
+
+    <!-- Full promo film player (auto-plays at bottom of Act VI) -->
+    <div class="finale-player" id="finalePlayer">
+      <video class="finale-player__video" preload="none" playsinline muted controls
+             poster="assets/image/stills/06v3_fireworks_stage_min.webp"
+             data-poster-full="assets/image/stills/06v3_fireworks_stage.png">
+        <source data-src="assets/video/v06_drone.mp4" type="video/mp4">
+      </video>
+      <p class="finale-player__caption">MARS CONCERT 2.0 · DRONE VIEW · 41s</p>
+    </div>
+  </section>
+
+  <aside class="ref-drawer" id="drawer-6">
+    <div class="ref-drawer__header">
+      <h3 class="ref-drawer__title">LIVE PHOTOS · FIREWORKS &amp; DRONES</h3>
+      <button class="ref-drawer__close" data-drawer="drawer-6" aria-label="Close">✕</button>
+    </div>
+    <div class="ref-drawer__grid">
+      <img class="ref-drawer__img" src="assets/image/references/real_FUe3kslTjv.jpg" alt="Fireworks volley" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_d1W89BlRg8.jpg" alt="Drone formation" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_2sSAI9KYiS.jpg" alt="Fireworks night sky" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_5sUx8HVfoE.jpg" alt="Finale fireworks burst" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_qpXVNAoAHu.jpg" alt="Drone light show" loading="lazy">
+      <img class="ref-drawer__img" src="assets/image/references/real_Z7fBtwUf5G.jpg" alt="Sky full of fireworks" loading="lazy">
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════════════════════════════════════
+       FINALE CARD — End credits
+       ════════════════════════════════════════════════════════════ -->
+  <section class="finale-card" id="finale-card">
+    <div class="finale-card__inner">
+      <p class="finale-card__credit">DESIGNED BY DEMOGORGAN</p>
+      <h2 class="finale-card__title">MARS CONCERT 2.0</h2>
+      <p class="finale-card__subtitle">MARS UTOPIA</p>
+      <div class="finale-card__meta">
+        <span>南京汤山 Music Valley</span>
+        <span class="finale-card__dot">·</span>
+        <span>40,000㎡ 采石场</span>
+        <span class="finale-card__dot">·</span>
+        <span>150m 悬崖</span>
+      </div>
+      <div class="finale-explore">
+        <span class="finale-explore__divider">探索更多 Explore More</span>
+        <a class="finale-explore__link" href="#/mission">
+          Mission Control
+          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 12h14 M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="finale-explore__link" href="#/setlist">
+          Twin Setlist
+          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 12h14 M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="finale-explore__link" href="#/artist">
+          The Architect
+          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 12h14 M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <button class="finale-card__return" id="returnToTop">
+        <span class="finale-card__return-text">返回火星 RETURN TO MARS</span>
+        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 4v16 M6 10l6-6 6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </section>
+
+  </div><!-- /view-home -->
+  </main><!-- /appView -->
+
+  <!-- 全站唯一音频元素（SPA 外壳常驻，导航间不销毁） -->
+  <audio id="hiddenAudio" preload="auto"></audio>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SCRIPTS (deferred，顺序即依赖序)
+       ════════════════════════════════════════════════════════════ -->
+  <script src="js/player-core.js?v=2" defer></script>
+  <script src="js/audio.js?v=7" defer></script>
+  <script src="js/main.js?v=6" defer></script>
+  <script src="js/scroll-video.js?v=7" defer></script>
+  <script src="js/particles.js?v=7" defer></script>
+  <script src="js/nav.js?v=11" defer></script>
+  <script src="js/site-player.js?v=11" defer></script>
+  <script src="js/functional.js?v=6" defer></script>
+  <script src="js/setlist-player.js?v=16" defer></script>
+  <script src="js/router.js?v=2" defer></script>
+
+</body>
+</html>

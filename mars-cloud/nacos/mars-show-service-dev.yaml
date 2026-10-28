@@ -1,0 +1,10 @@
+# ============================================================
+# Nacos 服务私有配置：data-id=mars-show-service-dev.yaml, group=MARS_GROUP
+# 只放 show-service 的差异化配置；公共项在 mars-common-dev.yaml。
+# 本文件演示 @RefreshScope 动态刷新：修改 mars.seat.lock-ttl 后
+# 访问 GET /api/v1/show/seat-config 立即看到新值，无需重启。
+# ============================================================
+
+mars:
+  seat:
+    lock-ttl: 300   # 座位锁定时长（秒）

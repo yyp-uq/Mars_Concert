@@ -1,0 +1,64 @@
+server:
+  port: 9001
+
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8858
+      eager: true
+  # ---------- 本地兜底（与 Nacos 共享配置 mars-common-dev.yaml 内容一致，Nacos 优先） ----------
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mars_concert?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: "1234"
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      timeout: 3000ms
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+mars:
+  jwt:
+    secret: mars-concert-super-secret-key-please-change-in-prod-0123456789
+    access-ttl-seconds: 7200
+    refresh-ttl-seconds: 604800
+  # 微信小程序登录（凭据走环境变量，禁止写死）
+  wechat:
+    mini:
+      app-id: ${WECHAT_MINI_APP_ID:}
+      app-secret: ${WECHAT_MINI_APP_SECRET:}
+  # 阿里云短信：enabled=false 走日志模拟；true 时真实调用 SendSms
+  sms:
+    enabled: ${ALIYUN_SMS_ENABLED:false}
+    access-key-id: ${ALIYUN_SMS_ACCESS_KEY_ID:}
+    access-key-secret: ${ALIYUN_SMS_ACCESS_KEY_SECRET:}
+    sign-name: ${ALIYUN_SMS_SIGN_NAME:阿里云短信测试}
+    # 账号内已审核通过的验证码模板（变量名 code）
+    template-code: ${ALIYUN_SMS_TEMPLATE_CODE:SMS_336600248}
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+knife4j:
+  enable: true
+
+logging:
+  level:
+    com.mars: debug

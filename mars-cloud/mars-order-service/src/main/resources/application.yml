@@ -1,0 +1,56 @@
+server:
+  port: 9003
+
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8858
+      eager: true
+  # ---------- 本地兜底（与 Nacos 共享配置 mars-common-dev.yaml 内容一致，Nacos 优先） ----------
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mars_concert?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: "1234"
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      timeout: 3000ms
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+# Feign 熔断：Sentinel 接管后 fallbackFactory 才生效（手册 §11.3）
+feign:
+  sentinel:
+    enabled: true
+
+mars:
+  jwt:
+    secret: mars-concert-super-secret-key-please-change-in-prod-0123456789
+    access-ttl-seconds: 7200
+    refresh-ttl-seconds: 604800
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+knife4j:
+  enable: true
+
+logging:
+  level:
+    com.mars: debug

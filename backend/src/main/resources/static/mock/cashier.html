@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>模拟支付收银台 · MARS CONCERT</title>
+</head>
+<body style="background:#0A0A0F;color:#fff;font-family:sans-serif;text-align:center;padding:80px">
+  <h2>模拟支付收银台</h2>
+  <p style="color:#aaa">仅用于学习演示：以「渠道服务器」身份回调后端</p>
+  <p>支付单号：<span id="pno"></span></p>
+  <p>金额：¥<span id="amt">--</span></p>
+  <button id="pay" style="padding:14px 40px;font-size:18px;background:#E63946;color:#fff;border:0;border-radius:8px;cursor:pointer">
+    模拟支付成功
+  </button>
+  <p id="tip" style="margin-top:1rem;color:#F4A261"></p>
+
+<script>
+  const pno = new URLSearchParams(location.search).get('paymentNo');
+  document.getElementById('pno').textContent = pno;
+
+  // 收银台读取支付单金额（公开只读接口）
+  fetch('/api/v1/payments/' + pno + '/info')
+    .then(r => r.json())
+    .then(j => { if (j.code === 0) document.getElementById('amt').textContent = j.data.amount; });
+
+  document.getElementById('pay').onclick = async () => {
+    const tip = document.getElementById('tip');
+    tip.textContent = '回调中…';
+    // 以「渠道服务器」身份调用后端回调（真实环境由支付宝服务器调用，密钥在服务端）
+    const channelTradeNo = 'MOCK' + Date.now();
+    const sign = await crypto.subtle.digest('SHA-256',
+      new TextEncoder().encode(pno + channelTradeNo + 'MARS_MOCK_SECRET')
+    ).then(buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join(''));
+    try {
+      const resp = await fetch('/api/v1/pay/callback/mock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentNo: pno, channelTradeNo, sign, paidTime: new Date().toISOString() })
+      });
+      const j = await resp.json();
+      tip.textContent = j.code === 0 ? '✓ 支付成功，正在返回订单页…' : ('失败：' + j.message);
+      if (j.code === 0) {
+        setTimeout(() => { location.href = '/#/orders'; }, 1000);
+      }
+    } catch (e) {
+      tip.textContent = '请求失败：' + e.message;
+    }
+  };
+</script>
+</body>
+</html>

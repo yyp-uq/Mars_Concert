@@ -1,0 +1,52 @@
+server:
+  port: 9009
+
+spring:
+  application:
+    name: mars-ai-service
+  ai:
+    openai:
+      # 从环境变量读取，禁止写死：setx DASHSCOPE_API_KEY "sk-xxx"
+      # 未配置时用占位符保证服务能启动（接口返回兜底话术，不白屏）；配置真实 Key 后自动生效
+      api-key: ${DASHSCOPE_API_KEY:sk-placeholder-set-real-key}
+      # 百炼工作空间专属 OpenAI 兼容端点（默认业务空间 ws-mq0pxo7pa68ur3xj）
+      base-url: https://ws-mq0pxo7pa68ur3xj.cn-beijing.maas.aliyuncs.com/compatible-mode
+      chat:
+        options:
+          model: qwen-plus
+          temperature: 0.3
+      embedding:
+        options:
+          model: text-embedding-v3
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mars_concert?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: "1234"
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      timeout: 3000ms
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+mars:
+  ai:
+    services:
+      order-url: http://localhost:9003
+      show-url: http://localhost:9002
+    refund-confirm-ttl-minutes: 5
+    nacos:
+      server-addr: localhost:8848
+      group: MARS_GROUP
+      service-name: mars-ai-service
+      port: 9009
+      enabled: true
+
+logging:
+  level:
+    com.mars.ai: debug

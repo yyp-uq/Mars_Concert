@@ -1,0 +1,35 @@
+# ─── Build outputs ───────────────────────────
+target/
+build/
+out/
+*.class
+*.jar
+*.war
+
+# ─── Node ────────────────────────────────────
+node_modules/
+npm-debug.log*
+
+# ─── Large media (超出 GitHub 100MB 限制，本地保留) ──
+**/assets/video/
+key_visuals/
+ffmpeg/
+mars_concert_site/assets/
+
+# ─── Runtime / logs / caches ─────────────────
+*.log
+logs/
+dump.rdb
+*.tmp
+.DS_Store
+Thumbs.db
+
+# ─── IDE ─────────────────────────────────────
+.idea/
+.vscode/
+.trae/
+*.iml
+
+# ─── Env / secrets ───────────────────────────
+.env
+*.pem

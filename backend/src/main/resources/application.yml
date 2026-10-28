@@ -1,0 +1,104 @@
+server:
+  port: 8080                 # 服务端口
+  servlet:
+    context-path: /          # 访问根路径
+
+spring:
+  application:
+    name: mars-platform
+  # ---------- 数据源 ----------
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver   # MySQL 8 驱动类（注意 cj）
+    url: jdbc:mysql://localhost:3306/mars_concert?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: "1234"        # 本机 MySQL root 实测密码（手册示例为 root123，按环境调整）
+  # ---------- JSON 序列化 ----------
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null          # null 字段不返回给前端，JSON 更干净
+  # ---------- Redis ----------
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 16
+          max-idle: 8
+          min-idle: 0
+  # ---------- RabbitMQ（第5卷：可靠消息/扇出/死信） ----------
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: mars
+    password: "mars123"
+    virtual-host: /
+    publisher-confirm-type: correlated   # 发布到交换机的确认(异步回调)
+    publisher-returns: true              # 交换机找不到队列时退回
+    template:
+      mandatory: true
+    listener:
+      simple:
+        acknowledge-mode: manual          # 消费端手动ACK，处理完再确认
+        prefetch: 10                      # 每次预取10条，控制单消费者速度
+        retry:
+          enabled: false                  # 不用框架自动重试，自己用死信+补偿，语义更清晰
+  # ---------- 邮件（第5卷：消息中心） ----------
+  # 学习期未配置 SMTP，MailNotifier 会 catch 住降级为日志，不影响支付主链路。
+  # 若要真发信：把 host/port/username/password 换成你的邮箱与 SMTP 授权码（不是登录密码）。
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: your_mail@qq.com
+    password: your_smtp_authorization_code
+    properties:
+      mail.smtp.starttls.enable: true
+  # ---------- Elasticsearch（第6卷：歌曲搜索） ----------
+  elasticsearch:
+    uris: http://localhost:9200
+
+# ---------- 会员认证 JWT ----------
+mars:
+  jwt:
+    # 生产用环境变量注入，至少32字节(HS256)。学习期写这里
+    secret: mars-concert-super-secret-key-please-change-in-prod-0123456789
+    access-ttl-seconds: 7200      # 2小时
+    refresh-ttl-seconds: 604800   # 7天
+  # ---------- 第5卷：模拟支付网关 ----------
+  pay:
+    mock:
+      base-url: http://localhost:8080   # 收银台/回调基础地址
+  # ---------- 第6卷：MinIO 文件存储 ----------
+  minio:
+    endpoint: http://localhost:9000
+    access-key: mars
+    secret-key: mars12345
+    bucket-public: mars-public
+    bucket-private: mars-private
+
+# ---------- MyBatis-Plus ----------
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true            # 下划线列名 ↔ 驼峰字段：question_en ↔ questionEn
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 控制台打印SQL，学习期非常有用
+  global-config:
+    db-config:
+      id-type: auto            # 主键自增（和表 AUTO_INCREMENT 对应）
+      logic-delete-field: deleted   # 逻辑删除字段名
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# ---------- 接口文档 ----------
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+knife4j:
+  enable: true
+
+# ---------- 日志 ----------
+logging:
+  level:
+    com.mars.concert: debug    # 自己的代码打印 debug，便于观察

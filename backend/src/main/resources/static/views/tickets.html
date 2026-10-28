@@ -1,0 +1,54 @@
+<!-- ════════════════════════════════════════════════════════════
+     TICKETS · SPA 视图片段（由 router.js 注入）
+     选票页：场次下拉 + 票档列表（价格/余票/数量选择）+ 加入购物车 / 立即购票
+     ════════════════════════════════════════════════════════════ -->
+
+<nav class="page-nav" aria-label="Page navigation">
+  <a class="page-nav__brand" href="#/">MARS CONCERT 2.0</a>
+  <div class="page-nav__links">
+    <a class="page-nav__link" href="#/mission">Mission Control</a>
+    <a class="page-nav__link" href="#/orders">我的订单</a>
+    <a class="page-nav__link" href="#/tickets">选票</a>
+  </div>
+  <a class="page-nav__back" href="#/">
+    <svg viewBox="0 0 24 24" width="14" height="14"><path d="M19 12H5 M11 6l-6 6 6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    返回 Home
+  </a>
+</nav>
+
+<section class="act act--info page-act">
+  <div class="act__bg" style="background-image:url('assets/image/stills/06v3_fireworks_stage_min.webp')"></div>
+  <div class="info-wrap" style="max-width:960px">
+    <div class="info-head">
+      <p class="info-head__eyebrow">Tickets · Chapter Ⅸ</p>
+      <h2 class="info-head__title">选票 <em>Seat Selection</em></h2>
+      <p class="info-head__desc">选择场次，挑选票档，加入购物车或立即购票。</p>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin:1rem 0;align-items:center;flex-wrap:wrap">
+      <label style="font-weight:600">场次：</label>
+      <select id="eventSelect" style="padding:.6rem 1rem;background:#1a1a20;color:#fff;border:1px solid #333;border-radius:6px;min-width:280px"></select>
+      <span id="authTip" style="color:#E63946"></span>
+    </div>
+
+    <!-- 票档列表 -->
+    <div id="tierList" class="event-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1rem 0">
+      <div class="event-cell" style="padding:2rem;text-align:center">加载中…</div>
+    </div>
+
+    <!-- 已选 + 提交 -->
+    <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;align-items:center">
+      <button id="cartBtn" class="ticket-btn" style="padding:.8rem 1.4rem">加入购物车</button>
+      <button id="buyBtn" class="ticket-btn" style="padding:.8rem 1.4rem;background:linear-gradient(135deg,#E63946,#F4A261);color:#fff;border-color:#E63946">立即购票</button>
+      <button id="cartViewBtn" class="ticket-btn" style="padding:.8rem 1.4rem">查看购物车 / 去结算</button>
+      <span id="ticketTip" style="color:#F4A261"></span>
+    </div>
+  </div>
+</section>
+
+<footer class="page-footer">
+  <a class="page-footer__return" href="#/">
+    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 19V5 M6 11l6-6 6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    返回火星 Return to Mars
+  </a>
+</footer>

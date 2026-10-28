@@ -1,0 +1,55 @@
+<!-- ════════════════════════════════════════════════════════════
+     ORDERS · SPA 视图片段
+     订单页：列表 / 详情 / 取消 / 倒计时过期
+     ════════════════════════════════════════════════════════════ -->
+
+<nav class="page-nav" aria-label="Page navigation">
+  <a class="page-nav__brand" href="#/">MARS CONCERT 2.0</a>
+  <div class="page-nav__links">
+    <a class="page-nav__link" href="#/mission">Mission Control</a>
+    <a class="page-nav__link" href="#/orders">我的订单</a>
+    <a class="page-nav__link" href="#/tickets">选票</a>
+  </div>
+  <a class="page-nav__back" href="#/">
+    <svg viewBox="0 0 24 24" width="14" height="14"><path d="M19 12H5 M11 6l-6 6 6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    返回 Home
+  </a>
+</nav>
+
+<section class="act act--info page-act">
+  <div class="act__bg" style="background-image:url('assets/image/stills/06v3_fireworks_stage_min.webp')"></div>
+  <div class="info-wrap" style="max-width:960px">
+    <div class="info-head">
+      <p class="info-head__eyebrow">Orders · Chapter Ⅹ</p>
+      <h2 class="info-head__title">我的订单 <em>My Orders</em></h2>
+      <p class="info-head__desc">查看订单、支付倒计时、取消待支付订单。</p>
+    </div>
+
+    <div id="authArea" style="margin:1rem 0"></div>
+
+    <div style="display:flex;gap:.5rem;margin:1rem 0;align-items:center">
+      <span>状态筛选：</span>
+      <button data-status="" class="ticket-btn" style="padding:.4rem 1rem">全部</button>
+      <button data-status="WAIT_PAY" class="ticket-btn" style="padding:.4rem 1rem">待支付</button>
+      <button data-status="PAID" class="ticket-btn" style="padding:.4rem 1rem">已支付</button>
+      <button data-status="CANCELLED" class="ticket-btn" style="padding:.4rem 1rem">已取消</button>
+      <span id="orderTip" style="color:#F4A261;margin-left:1rem"></span>
+    </div>
+
+    <div id="orderList" style="margin:1rem 0"></div>
+
+    <div class="info-head" style="margin-top:2rem">
+      <p class="info-head__eyebrow">E-Tickets · Chapter Ⅺ</p>
+      <h2 class="info-head__title">我的电子票 <em>E-Tickets</em></h2>
+      <p class="info-head__desc">支付成功后自动出票，凭二维码入场。</p>
+    </div>
+    <div id="ticketArea" style="margin:1rem 0"></div>
+  </div>
+</section>
+
+<footer class="page-footer">
+  <a class="page-footer__return" href="#/">
+    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 19V5 M6 11l6-6 6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    返回火星 Return to Mars
+  </a>
+</footer>
